@@ -18,7 +18,7 @@ import javafx.stage.Stage;
  *
  * @author Gabriel
  */
-public class JavaFXApplication13_TextRecognitionScreen extends Application {
+public class PixelReaderWebcamCapture extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {

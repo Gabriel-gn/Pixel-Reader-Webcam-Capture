@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="JavaFXApplication13_TextRecognitionScreen.jar" size="10849" download="eager" />
+    <jar href="JavaFXApplication13_TextRecognitionScreen.jar" size="15289" download="eager" />
     <jar href="lib\ImagePaneControl.jar" size="40815" download="eager" />
     <jar href="lib\bridj-0.7.0.jar" size="935929" download="eager" />
     <jar href="lib\slf4j-api-1.7.2.jar" size="26083" download="eager" />
@@ -17,6 +17,6 @@
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="JavaFXApplication13_TextRecognitionScreen" >
     <param name="requiredFXVersion" value="8.0+"/>
   </applet-desc>
-  <jfx:javafx-desc  width="800" height="600" main-class="javafxapplication13_textrecognitionscreen.JavaFXApplication13_TextRecognitionScreen"  name="JavaFXApplication13_TextRecognitionScreen" />
+  <jfx:javafx-desc  width="800" height="600" main-class="javafxapplication13_textrecognitionscreen.PixelReaderWebcamCapture"  name="JavaFXApplication13_TextRecognitionScreen" />
   <update check="always"/>
 </jnlp>

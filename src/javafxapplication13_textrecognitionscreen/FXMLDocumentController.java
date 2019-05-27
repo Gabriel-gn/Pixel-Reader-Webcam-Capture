@@ -289,7 +289,7 @@ public class FXMLDocumentController implements Initializable {
         selectedDirectory = directoryChooser.showDialog(((Scene) (anchorPane.getScene())).getWindow());
 
         if (selectedDirectory == null) {
-            lbl_folder.setText("");
+            lbl_folder.setText("Nenhuma pasta selecionada");
         } else {
             lbl_folder.setText(selectedDirectory.getAbsolutePath());
         }
