@@ -6,6 +6,7 @@
 package javafxapplication13_textrecognitionscreen;
 
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
 import java.awt.AWTException;
 import java.awt.Color;
@@ -18,6 +19,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,11 +40,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javafx.collections.FXCollections;
+import javafx.embed.swing.SwingNode;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.stage.DirectoryChooser;
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 
 /**
  *
@@ -93,6 +99,12 @@ public class FXMLDocumentController implements Initializable {
     private Button btn_capture;
     @FXML
     private ComboBox<Webcam> comboBox_webcam;
+    @FXML
+    private ComboBox<WebcamResolution> comboBox_webcamRes;
+    @FXML
+    private AnchorPane anchorPaneWebcam;
+    @FXML
+    private CheckBox checkBox_captureSnapshot;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -103,6 +115,7 @@ public class FXMLDocumentController implements Initializable {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComboBox();
+        initWebcamPanel();
 
     }
 
@@ -119,22 +132,43 @@ public class FXMLDocumentController implements Initializable {
 
         comboBox_webcam.valueProperty().addListener((obs, oldValue, newValue) -> {
             webcam = newValue;
-
-            Dimension[] nonStandardResolutions = new Dimension[]{
-                WebcamResolution.PAL.getSize(),
-                WebcamResolution.HD.getSize(),
-                new Dimension(2000, 1000),
-                new Dimension(1000, 500)
-            };
-
-            webcam.setCustomViewSizes(nonStandardResolutions);
-            webcam.setViewSize(WebcamResolution.HD.getSize());
-            webcam.open();
-
+//            webcam.open();
             System.out.println("Webcam: " + newValue.getName());
+            initWebcamPanel();
         });
-
         comboBox_webcam.getSelectionModel().selectFirst();
+
+        comboBox_webcamRes.setItems(FXCollections.observableArrayList(Arrays.asList(WebcamResolution.values())));
+        comboBox_webcamRes.valueProperty().addListener((obs, oldValue, newValue) -> {
+            webcam.close();
+            webcam.setViewSize(newValue.getSize());
+            System.out.println("Dimensões: " + newValue.getSize());
+            initWebcamPanel();
+            webcam.open();
+        });
+        comboBox_webcamRes.getSelectionModel().selectFirst();
+    }
+
+    private void initWebcamPanel() {
+        if (!anchorPaneWebcam.getChildren().isEmpty()) {
+            anchorPaneWebcam.getChildren().remove(0, anchorPaneWebcam.getChildren().size());
+        }
+
+        WebcamPanel panel = new WebcamPanel(webcam);
+//        panel.setFPSDisplayed(true);
+//        panel.setDisplayDebugInfo(true);
+//        panel.setImageSizeDisplayed(true);
+//        panel.setMirrored(true);
+
+        SwingNode swingNode = new SwingNode();
+        swingNode.setContent(panel);
+
+        AnchorPane.setTopAnchor(swingNode, 0.0);
+        AnchorPane.setBottomAnchor(swingNode, 0.0);
+        AnchorPane.setLeftAnchor(swingNode, 0.0);
+        AnchorPane.setRightAnchor(swingNode, 0.0);
+
+        anchorPaneWebcam.getChildren().add(swingNode);
     }
 
     private void captureScreenRect(int xi, int yi, int w, int h, boolean makeFile) throws AWTException {
@@ -334,12 +368,14 @@ public class FXMLDocumentController implements Initializable {
     }
 
     private void saveSnapshotToFolder(BufferedImage bImage) {
-        File outputFile = new File(selectedDirectory.getAbsolutePath() + "/snap(" + count + ").png");
+        if (checkBox_captureSnapshot.isSelected()) {
+            File outputFile = new File(selectedDirectory.getAbsolutePath() + "/snap(" + count + ").png");
 //        BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
-        try {
-            ImageIO.write(bImage, "png", outputFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            try {
+                ImageIO.write(bImage, "png", outputFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
