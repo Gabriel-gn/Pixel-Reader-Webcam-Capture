@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="JavaFXApplication13_TextRecognitionScreen.jar" size="1158326" download="eager" />
+    <jar href="JavaFXApplication13_TextRecognitionScreen.jar" size="1144850" download="eager" />
     <jar href="lib\ImagePaneControl.jar" size="40815" download="eager" />
     <jar href="lib\bridj-0.7.0.jar" size="935929" download="eager" />
     <jar href="lib\slf4j-api-1.7.2.jar" size="26083" download="eager" />
